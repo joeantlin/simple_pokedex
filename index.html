@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pokedex</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+</head>
+<body>
+    <div id="wrapper">
+        <div id="list"></div>
+        <div id="info"></div>
+
+    </div>
+
+    <script>
+        var pokemon = '';
+        for (var i = 1; i < 152; i++ ) {
+            pokemon += '<img id="poke'+i+'" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/'+i+'.png">';
+            console.log('i');
+        }
+        document.getElementById('list').innerHTML = pokemon;
+
+        $(document).ready(function(){
+            $('img').click(function(){
+                var j = 
+            
+                $.get("https://pokeapi.co/api/v2/pokemon/1/", function(res) {
+                    var html_str = "";
+                    html_str += "<h4>Types</h4>";
+                    html_str += "<ul>"; 
+                    for(var i = 0; i < res.types.length; i++) {
+                        html_str += "<li>" + res.types[i].type.name + "</li>";
+                    }
+                    html_str += "</ul>";
+                    $("#info").html(html_str);
+                }, "json");
+            })
+        })
+
+
+    </script>
+</body>
+</html>
