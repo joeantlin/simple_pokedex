@@ -7,21 +7,124 @@
     <title>Pokedex</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
+    <style>
+        *{
+            /* border: red dashed 0.1px; */
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+
+        body{
+            background-image: url('backdrop.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            height: 100vh;
+
+        }
+
+        #wrapper {
+            margin: auto;
+            display: block;
+            width: 900px;
+        }
+
+        #list {
+            width: 600px;
+            display:inline-block;
+            vertical-align: top;
+        }
+
+        #info {
+            width: 200px;
+            height: 500px;
+            display: inline-block;
+            position: fixed;
+            margin: 200px 50px;
+            padding: 5px 10px;
+            border: #c70019 solid;
+            border-width: 40px 20px 20px 20px;
+            border-radius:20px 0px 0px 20px;
+            background-color: #d5d7d8c4;
+        }
+            #info img {
+                width: 90%;
+                margin: auto;
+                display: block;
+            }
+            #info h3 {
+                text-align: center;
+                background-color: white;
+                padding: 5px;
+            }
+
+
+
+
+    
+    </style>
+
 </head>
 <body>
     <div id="wrapper">
         <div id="list"></div>
-        <div id="info"></div>
+        <div id="info">
+            <h3>Poke Entry #</h3>
+        </div>
+        
 
     </div>
 
     <script>
-        var pokemon = '';
-        for (var i = 1; i < 152; i++ ) {
-            pokemon += '<img id="poke'+i+'" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/'+i+'.png">';
-        }
-        document.getElementById('info').innerHTML = pokemon;
+        $(document).ready(function(){
+            var pokemon = '';
+            for (var i = 1; i < 152; i++ ) {
+                pokemon += '<img id="'+i+'" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/'+i+'.png">';
+            }
+            $("#list").html(pokemon);
+
+            $('img').click(function() {
+                pokeDex($(this).attr('id'));
+               
+            })
+
+            function pokeDex(a){
+                console.log(a)
+                //var pokedex = '';
+                $.get("https://pokeapi.co/api/v2/pokemon/"+a+"/", function(res) {
+                    var html_str = "";
+                    html_str += '<h3>Poke Entry #'+a+'</h3>';
+                    html_str += '<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/'+a+'.png">';
+                    html_str += "<h4>Types</h4>";
+                    html_str += "<ul>"; 
+                    for(var i = 0; i < res.types.length; i++) {
+                        html_str += "<li>" + res.types[i].type.name + "</li>";
+                    }
+                    html_str += "</ul>";
+                    $("#info").html(html_str);
+                }, "json");
+            }
+
+            
+        });
+
+
+
+
 
     </script>
 </body>
 </html>
+
+
+<!-- for (var j = 1; j < 152; j++ ) {
+    $.get("https://pokeapi.co/api/v2/pokemon/"+j+"/", function(res) {
+        var html_str = "";
+        html_str += "<h4>Types</h4>";
+        html_str += "<ul>"; 
+        for(var i = 0; i < res.types.length; i++) {
+            html_str += "<li>" + res.types[i].type.name + "</li>";
+        }
+        html_str += "</ul>";
+        $("#bulbasaur").html(html_str);
+    }, "json");
+    } -->
